@@ -79,4 +79,39 @@ When you’re done, you just deactivate (deactivate command), and your terminal 
 ### Answer:
 Textblob is a library used to implement the text sentiment analysis.
 
+### Q3. Some MCP client does not support SSE, in that case we are recommended to use `mcp-remote`. Why ?
+### Answer:
+- When you run your Gradio app with mcp_server=True, it exposes an MCP server endpoint at:
+- `http://localhost:7860/gradio_api/mcp/sse`
+- Notice the SSE at the end? That stands for Server-Sent Events → a way for the server to push data continuously to the client over HTTP.
 
+So normally, your MCP client (like a model, tool, or app) connects directly to this SSE-based endpoint.
+
+#### The Problem
+
+Not all MCP clients know how to talk SSE.
+Some only understand standard JSON-RPC over stdin/stdout or plain HTTP, not this “streaming events” style.
+
+So if the client doesn’t support SSE, it won’t be able to connect directly to the Gradio server.
+
+#### The solution: `mcp-remote`
+
+- Think of mcp-remote as a translator or adapter.
+
+```
+{
+  "mcpServers": {
+    "gradio": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "http://localhost:7860/gradio_api/mcp/sse"
+      ]
+    }
+  }
+}
+```
+- This tells your MCP client:
+“Instead of connecting directly to the SSE server, run mcp-remote. It will connect to the Gradio SSE server on your behalf, and then speak plain MCP (JSON-RPC) to you.”
+
+So, mcp-remote = middleman that bridges SSE → standard MCP protocol.
