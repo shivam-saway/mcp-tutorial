@@ -1,4 +1,4 @@
-#Disclaimer
+# Disclaimer
 This repository is based on the Unit 2 MCP course by Hugging Face. It is intended for learning and demonstration purposes only. The original idea and content belong to Hugging Face; I’ve just followed along and implemented the tutorial.
 
 # mcp-tutorial
