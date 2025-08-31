@@ -119,6 +119,100 @@ So if the client doesn’t support SSE, it won’t be able to connect directly t
 
 So, mcp-remote = middleman that bridges SSE → standard MCP protocol.
 
+### Building Clients for MCP server
+
+We will build the client for javascript app using `huggingface.js` and a python based client using `smolagents`.
+
+#### Configuration files for MCP hosts
+
+As per the architecture, the MCP clients needs a host environment to work. It can be a UI app or a MCP Host. 
+
+The MCP HOST applications like Cursor IDE or smolagents uses configuration files to maintain the connection of clients with MCP server. The configuration files are very simple. These files follow a consistent naming convention and structure across the MCP hosts. For example, the standard configuration file for MCP is named as `mcp.json`.
+
+```
+{
+  "servers": [
+  {
+    "name": "MCP Server",
+    "transport": {
+      "type": "sse",
+      "url": "http://localhost:7860/gradio_api/mcp/sse" // we are hosting a local MCP server. so localhost in url. If server is hosted on cloud or is available remotely then remote server url will be pasted here.
+    }
+  }
+  ]
+}
+
+```
+
+If we want to expose a local script as MCP server to our client app then we can use `stdio` transport type instead of `sse`. The server configuration would change as follows,
+
+Say you’ve built the app.py Gradio MCP server from the tutorial, but instead of deploying to Hugging Face Spaces or running via localhost:7860, you want to run it locally as a script and connect to it directly.
+
+Normally, python app.py starts the HTTP server (http://localhost:7860) with sse transport.
+
+But if you instead want your MCP client (e.g., Cursor, smolagents, etc.) to talk to the script directly via stdin/stdout, you’d use stdio transport.
+
+```
+{
+  "servers": [
+    {
+      "name": "Local Sentiment MCP Server",
+      "transport": {
+        "type": "stdio",
+        "command": "python",
+        "args": ["app.py"]
+      }
+    }
+  ]
+}
+
+
+```
+
+###### How it works
+
+- type: "stdio" → tells the MCP client:
+- “Don’t use HTTP or SSE. Instead, spawn this process and talk over stdin/stdout.”
+
+- command: "python" → the command to run.
+
+- args: ["app.py"] → arguments passed to the command (so it runs your app.py).
+
+##### Key Difference from sse
+
+- sse = client opens a URL and listens to events (http://localhost:7860/...).
+
+- stdio = client spawns the server process directly and communicates via pipes.
+
+This is much simpler for local development because:
+
+- No networking required.
+
+- No ports or URLs.
+
+- Just a subprocess connection.
+
+#### Configuration files for UI applications
+
+When it is needed to connect a UI app with a MCP server. we can configure the MCP client in UI app using the `config.json` file.
+Here is how to setup it.
+
+```
+{
+  "mcpServers": {
+    "mcp": {
+      "url": "http://localhost:7860/gradio_api/mcp/sse"
+    }
+  }
+}
+```
+
+#### Configuring MCP clients in Cursor IDE
+
+[link](https://huggingface.co/learn/mcp-course/unit2/clients#configuring-an-mcp-client-within-cursor-ide)
+
+
+
 ## Acknowledgements
 - Hugging Face MCP Course (Unit 2) – [link](https://huggingface.co/learn/mcp-course/unit2/introduction)
 - Gradio team for MCP integration
