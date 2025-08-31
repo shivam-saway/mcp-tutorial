@@ -1,3 +1,6 @@
+#Disclaimer
+This repository is based on the Unit 2 MCP course by Hugging Face. It is intended for learning and demonstration purposes only. The original idea and content belong to Hugging Face; I’ve just followed along and implemented the tutorial.
+
 # mcp-tutorial
 Hugging Face MCP course - e2e MCP application
 
@@ -115,3 +118,8 @@ So if the client doesn’t support SSE, it won’t be able to connect directly t
 “Instead of connecting directly to the SSE server, run mcp-remote. It will connect to the Gradio SSE server on your behalf, and then speak plain MCP (JSON-RPC) to you.”
 
 So, mcp-remote = middleman that bridges SSE → standard MCP protocol.
+
+## Acknowledgements
+- Hugging Face MCP Course (Unit 2) – [link](https://huggingface.co/learn/mcp-course/unit2/introduction)
+- Gradio team for MCP integration
+- TextBlob library for sentiment analysis
