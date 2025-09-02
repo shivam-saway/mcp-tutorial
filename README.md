@@ -144,6 +144,25 @@ Here is how to setup it.
 
 [link](https://huggingface.co/learn/mcp-course/unit2/clients#configuring-an-mcp-client-within-cursor-ide)
 
+### Using MCP in your AI coding assistants
+
+#### Connecting MCP servers with local and open source models
+
+This section deals with connecting the local and open source models with MCP. It uses a tool called `Continue`.
+
+##### Continue
+
+TODO: Add something about continue here.
+
+##### Setup Continue
+
+- Download the Continue Extension from VS code market place.
+- Install the extension and verify installation by seeing a extension icon the left bar
+
+##### Setup Local Models
+
+There are many models which are compatible with `Continue`. Three popular options are Ollama, Llama.cpp & LM Studio. Ollama is an open source tool that allows users to run LLM locally.
+Llama.cpp is a C++ library for running LLMs that also includes an OpenAI-compatible server. While LM Studio provides a graphical interface for running local models. You can access local models from the Hugging Face Hub and get commands and quick links for all major local inference apps.
 
 
 ## Acknowledgements
