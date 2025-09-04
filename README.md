@@ -164,6 +164,65 @@ TODO: Add something about continue here.
 There are many models which are compatible with `Continue`. Three popular options are Ollama, Llama.cpp & LM Studio. Ollama is an open source tool that allows users to run LLM locally.
 Llama.cpp is a C++ library for running LLMs that also includes an OpenAI-compatible server. While LM Studio provides a graphical interface for running local models. You can access local models from the Hugging Face Hub and get commands and quick links for all major local inference apps.
 
+If we take an example of `llamacpp`, it provides `llama-server` which we can use to run the LLMs locally. we can run any model from hugging face using `llama-server` like as shown below
+
+``` 
+llama-server -hf <model name>
+e.g., llama-server -hf unsloth/Devstral-Small-2505-GGUF:Q4_K_M
+```
+
+To use the local model in your text editor, we need to do some changes in our workspace directory and `Continue` will automatically handle rest of the things,
+
+- Create a folder called .continue/models
+- Create a file called local-model.yaml
+- add the local model yaml with the following structure.
+
+```
+name: Llama.cpp model
+version: 0.0.1
+schema: v1
+models:
+  - provider: llama.cpp
+    model: unsloth/Devstral-Small-2505-GGUF
+    apiBase: http://localhost:8080
+    defaultCompletionOptions:
+      contextLength: 8192 # Adjust based on the model
+    name: Llama.cpp Devstral-Small
+    roles:
+      - chat
+      - edit
+```
+###### Note: Continue supports multiple local model providers. You can use different models for different tasks or switch models as needed. This section focuses on local-first solutions, but Continue does work with popular providers like OpenAI, Anthropic, Microsoft/Azure, Mistral, and more. You can also run your own model provider.
+
+##### Local Model Integration with MCP
+
+Do the following to connect the local model with MCP server
+
+- Create a folder called `.continue/mcpServers`
+- Add the manifest for the MCP server
+- For example if we want to connect with sentiment analysis server then the manifest will look something like this
+
+```
+name: Sentiment Analysis MCP Server
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Sentiment Analysis
+    transport:
+      type: sse
+      url: http://localhost:7860/gradio_api/mcp/sse
+```
+
+Now you can prompt the model as follows
+
+```
+Please analyze the sentiment of the following sentences using the Sentiment Analysis tool:
+
+1. "I love how easy this library is to use!"
+2. "This bug makes me so frustrated."
+3. "The product is okay, not great but not terrible."
+
+```
 
 ## Acknowledgements
 - Hugging Face MCP Course (Unit 2) – [link](https://huggingface.co/learn/mcp-course/unit2/introduction)
