@@ -222,7 +222,43 @@ Please analyze the sentiment of the following sentences using the Sentiment Anal
 2. "This bug makes me so frustrated."
 3. "The product is okay, not great but not terrible."
 
+
 ```
+
+### Building MCP client using Gradio
+
+The blog [Building MCP client using Gradio](https://huggingface.co/learn/mcp-course/unit2/gradio-client) says the following statement in very first paragraph.
+
+```Gradio is best suited to the creation of UI clients and MCP servers, but it is also possible to use it as an MCP Client and expose that as a UI.```
+
+This statement is bit confusing specially with respect to UI clients parts. Here is the simplification of the above dense words
+
+- Normally
+  - Gradio is most commonly used in two ways:
+    - To make a user interface (UI) for your ML models or tools.
+    - To serve your ML model/tool as an MCP Server (so that other MCP clients like Cursor/VSCode can call it).
+   
+  - But also (the special case here):
+    - You can flip the role: use Gradio not just to provide a UI or server, but actually as an MCP Client itself.
+      - That means Gradio connects to another MCP Server.
+      - Then it exposes the connected tools to users through a Gradio-based chat interface.
+     
+So the blog is saying:
+👉 “Gradio is usually for building servers or UIs. But you can also use it as a client, connect it to an MCP server, and then give users a Gradio-powered chat UI to use those server tools.”
+
+##### Example Scenario
+
+Imagine:
+
+- You already built an MCP Server that provides math tools (like prime factorization, sentiment analysis, etc.).
+- Now, instead of opening Cursor IDE or VSCode to use those tools, you build a Gradio app that:
+  - Connects to your MCP Server (as an MCP Client).
+  - Lets end users interact with it directly in a web UI (chat window).
+
+So the confusing line just means:
+
+✅ Gradio isn’t limited to making UIs or MCP servers.
+✅ It can also act as a bridge client, pulling tools from an MCP server and showing them in a Gradio chat UI.
 
 ## Acknowledgements
 - Hugging Face MCP Course (Unit 2) – [link](https://huggingface.co/learn/mcp-course/unit2/introduction)
