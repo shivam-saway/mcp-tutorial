@@ -80,3 +80,25 @@ So if the client doesn’t support SSE, it won’t be able to connect directly t
 “Instead of connecting directly to the SSE server, run mcp-remote. It will connect to the Gradio SSE server on your behalf, and then speak plain MCP (JSON-RPC) to you.”
 
 So, mcp-remote = middleman that bridges SSE → standard MCP protocol.
+
+### Question 3: Using MCP clients within the application. The blog here [Using MCP client in Applications](https://huggingface.co/learn/mcp-course/unit2/clients) has a section conifguiring MCP clent in UI application. When the blog says “Configuring a UI MCP Client”, does “UI” mean any React/Next.js app or something else?
+
+### Answer:
+In this context, UI MCP Client does not mean any web app like React or Next.js.
+
+It specifically refers to developer tools and IDEs that already have MCP support built in, such as:
+
+Cursor IDE
+
+VS Code (with the Continue extension)
+
+JetBrains (with the Continue extension)
+
+These tools already understand the MCP protocol, so you only need to add a config file (like config.json or mcp.json) for them to connect to your MCP server. That’s why it works with “just a config.”
+
+If you are building a React/Next.js app (or any website), simply adding config.json will not make it an MCP client.
+👉 You would need to actually implement the MCP protocol using a client library such as HuggingFace.js (for JavaScript) or write your own integration.
+
+##### Summary
+- IDE tools (Cursor, Continue, etc.) → Config file is enough, they are MCP-aware.
+- Web apps (React, Next.js, etc.) → Need to implement the MCP protocol yourself.
