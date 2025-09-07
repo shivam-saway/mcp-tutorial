@@ -260,6 +260,68 @@ So the confusing line just means:
 ✅ Gradio isn’t limited to making UIs or MCP servers.
 ✅ It can also act as a bridge client, pulling tools from an MCP server and showing them in a Gradio chat UI.
 
+##### Connect to an example MCP server
+
+To connnect to a MCP server, we can use MCPClient Class from `smolagents.mcp_client` library.
+
+```
+With MCPClient(
+  "url": "url of mcp server",
+) as tools:
+  print("\n".join(f"${t.name}: ${t.description}");
+```
+
+Now connect to MCP server from gradio app
+
+First we need `smolagents`, `gradio` and `mcp_client` libraries.
+
+```pip install "smolagents[mcp]" "gradio[mcp]" mcp fastmcp```
+
+Now we can create a simple gradio interface which uses MCP client to the other MCP server.
+
+```
+import gradio as gr
+import os
+
+from mcp import StdioServerParameters
+from smolagents import InferenceClientModel, CodeAgent, ToolCollection, MCPClient
+```
+
+Next we can connect to MCP server and get the list of MCP tools, which we can use to answer the question
+
+```
+mcp_client = MCPClient(
+    {"url": "https://abidlabs-mcp-tool-http.hf.space/gradio_api/mcp/sse"} # This is the MCP Client we created in the previous section
+)
+tools = mcp_client.get_tools()
+```
+
+Now we can create a simple agent using `smolagents` and chat interface using `gradio`'s InferenceClientModel class.
+
+```
+model = InferenceClientModel(token=os.getenv("HF_TOKEN"))
+agent = CodeAgent(tools=[*tools], model=model)
+```
+
+Chat Interface
+
+```
+demo = gr.ChatInterface(
+    fn=lambda message, history: str(agent.run(message)),
+    type="messages",
+    examples=["Prime factorization of 68"],
+    title="Agent with MCP Tools",
+    description="This is a simple agent that uses MCP tools to answer questions."
+)
+
+demo.launch()
+```
+
+And that’s it! We’ve created a simple Gradio interface that uses the MCP Client to connect to the MCP Server and answer questions.
+
+Complete Full code is available [here](https://huggingface.co/learn/mcp-course/unit2/gradio-client#complete-example)
+
+
 ## Acknowledgements
 - Hugging Face MCP Course (Unit 2) – [link](https://huggingface.co/learn/mcp-course/unit2/introduction)
 - Gradio team for MCP integration
