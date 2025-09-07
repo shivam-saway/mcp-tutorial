@@ -1,3 +1,12 @@
+"""
+Disclaimer:
+This script is part of the Hugging Face MCP course (Unit 2) tutorial.
+All credit for the original concept and learning material goes to Hugging Face.
+I have only followed along and implemented the example for educational purposes.
+Do not use this code in production without proper testing, validation,
+and consideration of performance and security aspects.
+"""
+
 import json
 import gradio as gr
 from textblob import TextBlob
