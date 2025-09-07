@@ -102,3 +102,14 @@ If you are building a React/Next.js app (or any website), simply adding config.j
 ##### Summary
 - IDE tools (Cursor, Continue, etc.) → Config file is enough, they are MCP-aware.
 - Web apps (React, Next.js, etc.) → Need to implement the MCP protocol yourself.
+
+### Question 4: In the section “Gradio as MCP Client”, what exactly did we build, and what does the “Deploying to Hugging Face Spaces” step mean?
+### Answer:
+In this section, we did not build an MCP Server. Instead, we built a Gradio app that acts as an MCP Client. This client connects to a remote MCP Server (for example, https://abidlabs-mcp-tool-http.hf.space/gradio_api/mcp/sse) and exposes its tools through a simple Gradio chat interface.
+
+So, when the blog says “Deploying to Hugging Face Spaces”, it’s referring to deploying this Gradio MCP Client app (the chat interface) — not the MCP Server itself. By deploying it to Spaces, you make your UI client publicly available, so anyone visiting your Space can interact with the remote MCP Server through your Gradio-based interface.
+
+In short:
+- The actual MCP Server already exists at the provided URL.
+- You created a Gradio MCP Client app that connects to it.
+- Deployment to Hugging Face Spaces makes your client UI accessible to others, who can then indirectly use the MCP Server via your app.
